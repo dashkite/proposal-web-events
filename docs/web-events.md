@@ -1,6 +1,6 @@
-# Webhooks In Vedic Dolphin
+# Web Events
 
-We can easily extend the Vedic Dolpin architecture to support both incoming and outgoing Webhooks for arbitrary APIs, without requiring the origin APIs to have any knowledge of them. We refer to this as the Events Service.
+Web Events, also known as _Webhooks_, are an increasingly common pattern in Web applications. Establishing standards for using them helps [create more Web](https://www.pandastrike.com/posts/20151019-create-more-web/).
 
 ## Terminology
 
@@ -14,11 +14,11 @@ Our attempt to address this is to ditch the term Webhook altogether, since it’
 | ------------------- | ---------------- |
 | Web (Event) Handler | Web Event        |
 
+> **Note** Another candidate for terminology would be publish-and-subscribe. The W3C even has [a draft recommendation](https://www.w3.org/TR/websub/) for publish-and-subcribe. There are some differences between that recommendation and the proposal here: further study is required to determine whether it might be worth using that terminology.
+
 ## Web Handlers (Incoming Webhook)
 
 Web handlers are an alias to a description of an HTTP request, including any required credentials. If the authorization scheme is well-known, the Events Service may negotiate to obtain an ephemeral credential for performance reasons.
-
-DashKite services in Vedic Dolphin will use Runes, exchanging durable Runes with arbitrary Web Queries (to ensure, for example, that the subscription associated with the Handler is valid) for ephemeral Runes without them (thus avoiding the need to validate the subscription on every request).
 
 Handlers may be deleted by simply deleting the alias entry.
 
@@ -30,15 +30,15 @@ Event policies may allow events to be generated from a variety of potential requ
 
 ## Transforms
 
-We have contemplated transforms as a feature of DashKite DB, but we could instead introduce them as part of the Events service. We could thus support basic workflows entirely within the Events service. We could start out with relative simple transforms, like renaming a field, and introduce more complex features, like mapping across an array, in time. We could eventually integrate Web Queries into the transformation, making it possible to enrich a resource using other resources, and then transform them.
+We introduce transforms as part of the Events service, to map one data type to another. We could thus support basic workflows entirely within the Events service. We could start out with relative simple transforms, like renaming a field, and introduce more complex features, like mapping across an array, in time. We could eventually integrate Web Queries into the transformation, making it possible to enrich a resource using other resources, and then transform them.
 
 ## Authorization
 
 Authorization for the Events service, as with other services, is done via Rune. We can include these Runes alongside those we forge upon authentication. When creating Web Handlers, two Runes may be necessary: one for the Events Service and one for the Handler. Of course, our Web app can handle this for you, and for most creators, this will be sufficient. However, for developers, this will be less convenient than most Webhook implementations, which are coupled to an underlying service, and thus require only one credential.
 
-## Advantages Of Vedic Dolphin
+## Brokers
 
-In theory, we could implement Web Handlers regardless of the authorization scheme. On the other hand, without a policy-based approach, a Web Events implementation would be coupled to the underlying service. In any event, both Handlers and Events can be added seamlessly and unintrusively to any of our APIs. As we add new APIs, we get more Webhooks for free, creating myriad possibilities for interactions between services.
+In theory, brokers could seamlessly and unintrusivel add Handlers, Events, and Transforms to any API. API providers would get Web Event support for free, creating myriad possibilities for interactions between services.
 
 ## Implications For No Code
 
